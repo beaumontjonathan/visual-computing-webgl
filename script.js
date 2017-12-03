@@ -1,8 +1,11 @@
 var camera;
 var scene;
 var renderer;
-var cube;
 var mesh;
+var meshMaterials = {
+    faces: new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+    edges: new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+};
 // Initialise the scene, and draw it for the first time.
 init();
 animate();
@@ -41,21 +44,29 @@ function setupRenderer() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 }
+function drawObject(geometry) {
+    var material = (mesh) ? mesh.material : meshMaterials.faces;
+    mesh = new THREE.Mesh(geometry, material);
+    mesh.name = geometry.name;
+    scene.add(mesh);
+}
 // Draws a cube.
 function drawCube() {
-    // TODO: Draw a cube (requirement 1).
+    drawObject(getCubeGeometry());
+}
+// Returns the geometry for a cube of unit length 2, centred in the origin.
+function getCubeGeometry() {
     var geometry = new THREE.BoxGeometry(2, 2, 2);
-    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    geometry.name = "cube";
+    return geometry;
 }
 // Draw the x, y, z axes.
 function drawAxes() {
-    // TODO: Visualise the axes of the global coordinate system (requirment 2).
     // Materials
     var redMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
     var greenMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
     var blueMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+    // Vectors
     var origin = new THREE.Vector3(0, 0, 0);
     var xVector = new THREE.Vector3(100, 0, 0);
     var yVector = new THREE.Vector3(0, 100, 0);
@@ -91,16 +102,27 @@ function handleKeyDown(event) {
     switch (event.keyCode) {
         // Render modes.
         case 70:// f = face
-            // TODO: add code for face render mode.
-            alert('TODO: add code for face render mode (requirement 4).');
+            changeMeshMaterial(meshMaterials.faces);
             break;
         case 69:// e = edge
-            // TODO: add code for edge render mode.
-            alert('TODO: add code for edge render mode (requirement 4).');
+            changeMeshMaterial(meshMaterials.edges);
             break;
         case 86:// v = vertex
             // TODO: add code for vertex render mode.
             alert('TODO: add code for vertex render mode (requirement 4).');
             break;
     }
+}
+// Change the material of the mesh.
+function changeMeshMaterial(newMaterial) {
+    var geometry = mesh.geometry;
+    removeObject(mesh);
+    mesh = new THREE.Mesh(geometry, newMaterial);
+    mesh.name = geometry.name;
+    scene.add(mesh);
+}
+// Remove a 3D object from the scene.
+function removeObject(object) {
+    var selectedObject = scene.getObjectByName(object.name);
+    scene.remove(selectedObject);
 }
