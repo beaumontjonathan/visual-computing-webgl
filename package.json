@@ -1,0 +1,22 @@
+{
+  "name": "visual-computing-webgl",
+  "version": "1.0.0",
+  "description": "Visual Computing coursework: implement software to render and manipulate a 3D model using WebGL.",
+  "main": "three.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/castlechef/visual-computing-webgl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/castlechef/visual-computing-webgl/issues"
+  },
+  "homepage": "https://github.com/castlechef/visual-computing-webgl#readme",
+  "devDependencies": {
+    "@types/three": "^0.84.34"
+  }
+}
