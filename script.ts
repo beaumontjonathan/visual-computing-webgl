@@ -1,4 +1,7 @@
-let camera, scene, renderer, mesh;
+let camera: THREE.PerspectiveCamera;
+let scene: THREE.Scene;
+let renderer: THREE.WebGLRenderer;
+let mesh;
 
 // Initialise the scene, and draw it for the first time.
 init();
@@ -10,31 +13,53 @@ document.addEventListener('keydown', handleKeyDown);
 
 // Scene initialisation. This function is only run once, at the very beginning.
 function init() {
-    scene = new THREE.Scene();
+    setupCamera();
+    setupScene();
 
-    // Set up the camera, move it to (3, 4, 5) and look at the origin (0, 0, 0).
+    drawCube();
+    drawAxes();
+
+    setupRenderer();
+
+    // Handle resizing of the browser window.
+    window.addEventListener('resize', handleResize, false);
+}
+
+// Set up the camera, move it to (3, 4, 5) and look at the origin (0, 0, 0).
+function setupCamera() {
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(3, 4, 5);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
+}
+
+// Sets up the scene, adds a helper grid and basic lighting.
+function setupScene() {
+    scene = new THREE.Scene();
 
     // Draw a helper grid in the x-z plane (note: y is up).
     scene.add(new THREE.GridHelper(10, 20, 0xffffff));
 
-    // TO DO: Draw a cube (requirement 1).
-    // TO DO: Visualise the axes of the global coordinate system (requirment 2).
-
     // Basic ambient lighting.
     scene.add(new THREE.AmbientLight(0xffffff));
-    // TO DO: add more complex lighting for 'face' rendering mode (requirement 4).
+    // TODO: add more complex lighting for 'face' rendering mode (requirement 4).
+}
 
-    // Set up the Web GL renderer.
+// Set up the Web GL renderer.
+function setupRenderer() {
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio); // HiDPI/retina rendering
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+}
 
-    // Handle resizing of the browser window.
-    window.addEventListener('resize', handleResize, false);
+// Draws a cube.
+function drawCube() {
+    // TODO: Draw a cube (requirement 1).
+}
+
+// Draw the x, y, z axes.
+function drawAxes() {
+    // TODO: Visualise the axes of the global coordinate system (requirment 2).
 }
 
 // Handle resizing of the browser window.
@@ -48,7 +73,7 @@ function handleResize() {
 function animate() {
     requestAnimationFrame(animate);
 
-    // TO DO: This is a good place for code that rotates your cube (requirement 3).
+    // TODO: This is a good place for code that rotates your cube (requirement 3).
 
     // Render the current scene to the screen.
     renderer.render(scene, camera);
@@ -59,17 +84,20 @@ function handleKeyDown(event) {
     switch (event.keyCode) {
         // Render modes.
         case 70: // f = face
-            alert('TO DO: add code for face render mode (requirement 4).');
+            // TODO: add code for face render mode.
+            alert('TODO: add code for face render mode (requirement 4).');
             break;
 
         case 69: // e = edge
-            alert('TO DO: add code for edge render mode (requirement 4).');
+            // TODO: add code for edge render mode.
+            alert('TODO: add code for edge render mode (requirement 4).');
             break;
 
         case 86: // v = vertex
-            alert('TO DO: add code for vertex render mode (requirement 4).');
+            // TODO: add code for vertex render mode.
+            alert('TODO: add code for vertex render mode (requirement 4).');
             break;
 
-        // TO DO: add code for starting/stopping rotations (requirement 3).
+        // TODO: add code for starting/stopping rotations (requirement 3).
     }
 }
