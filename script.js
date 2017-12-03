@@ -2,6 +2,8 @@ var camera;
 var scene;
 var renderer;
 var mesh;
+var manager;
+var bunnyGeometry;
 var meshMaterials = {
     faces: new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
     edges: new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
@@ -19,6 +21,8 @@ function init() {
     drawCube();
     drawAxes();
     setupRenderer();
+    manager = new THREE.LoadingManager();
+    loadBunny();
     // Handle resizing of the browser window.
     window.addEventListener('resize', handleResize, false);
 }
@@ -59,6 +63,21 @@ function getCubeGeometry() {
     var geometry = new THREE.BoxGeometry(2, 2, 2);
     geometry.name = "cube";
     return geometry;
+}
+// Loads the bunny object from file.
+function loadBunny() {
+    new THREE.OBJLoader(manager).load('bunny-5000.obj', function (object) {
+        object.traverse(function (child) {
+            if (child instanceof THREE.Mesh) {
+                bunnyGeometry = child.geometry;
+                bunnyGeometry.name = "bunny";
+            }
+        });
+    });
+}
+// Draws a bunny.
+function drawBunny() {
+    drawObject(bunnyGeometry);
 }
 // Draw the x, y, z axes.
 function drawAxes() {
@@ -110,6 +129,14 @@ function handleKeyDown(event) {
         case 86:// v = vertex
             // TODO: add code for vertex render mode.
             alert('TODO: add code for vertex render mode (requirement 4).');
+            break;
+        case 66://b = bunny
+            removeObject(mesh);
+            drawBunny();
+            break;
+        case 67:// c = cube
+            removeObject(mesh);
+            drawCube();
             break;
     }
 }

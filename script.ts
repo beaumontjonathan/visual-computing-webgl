@@ -2,6 +2,8 @@ let camera: THREE.PerspectiveCamera;
 let scene: THREE.Scene;
 let renderer: THREE.WebGLRenderer;
 let mesh: THREE.Mesh;
+let manager: THREE.LoadingManager;
+let bunnyGeometry;
 
 const meshMaterials = {
     faces: new THREE.MeshBasicMaterial({color: 0x00ff00}),
@@ -25,6 +27,9 @@ function init(): void {
     drawAxes();
 
     setupRenderer();
+
+    manager = new THREE.LoadingManager();
+    loadBunny();
 
     // Handle resizing of the browser window.
     window.addEventListener('resize', handleResize, false);
@@ -74,6 +79,23 @@ function getCubeGeometry(): THREE.Geometry {
     const geometry = new THREE.BoxGeometry(2, 2, 2);
     geometry.name = "cube";
     return geometry;
+}
+
+// Loads the bunny object from file.
+function loadBunny(): void {
+    new THREE.OBJLoader(manager).load('bunny-5000.obj', object => {
+        object.traverse(child => {
+            if (child instanceof THREE.Mesh) {
+                bunnyGeometry = child.geometry;
+                bunnyGeometry.name = "bunny";
+            }
+        })
+    });
+}
+
+// Draws a bunny.
+function drawBunny() {
+    drawObject(bunnyGeometry);
 }
 
 // Draw the x, y, z axes.
@@ -138,6 +160,16 @@ function handleKeyDown(event): void {
         case 86: // v = vertex
             // TODO: add code for vertex render mode.
             alert('TODO: add code for vertex render mode (requirement 4).');
+            break;
+
+        case 66: //b = bunny
+            removeObject(mesh);
+            drawBunny();
+            break;
+
+        case 67: // c = cube
+            removeObject(mesh);
+            drawCube();
             break;
 
         // TODO: add code for starting/stopping rotations (requirement 3).
