@@ -1,6 +1,7 @@
 var camera;
 var scene;
 var renderer;
+var cube;
 var mesh;
 // Initialise the scene, and draw it for the first time.
 init();
@@ -43,10 +44,34 @@ function setupRenderer() {
 // Draws a cube.
 function drawCube() {
     // TODO: Draw a cube (requirement 1).
+    var geometry = new THREE.BoxGeometry(2, 2, 2);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 }
 // Draw the x, y, z axes.
 function drawAxes() {
     // TODO: Visualise the axes of the global coordinate system (requirment 2).
+    // Materials
+    var redMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+    var greenMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+    var blueMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+    var origin = new THREE.Vector3(0, 0, 0);
+    var xVector = new THREE.Vector3(100, 0, 0);
+    var yVector = new THREE.Vector3(0, 100, 0);
+    var zVector = new THREE.Vector3(0, 0, 100);
+    var xGeometry = new THREE.Geometry();
+    var yGeometry = new THREE.Geometry();
+    var zGeometry = new THREE.Geometry();
+    xGeometry.vertices.push(origin, xVector);
+    yGeometry.vertices.push(origin, yVector);
+    zGeometry.vertices.push(origin, zVector);
+    var xAxisLine = new THREE.Line(xGeometry, redMaterial);
+    var yAxisLine = new THREE.Line(yGeometry, greenMaterial);
+    var zAxisLine = new THREE.Line(zGeometry, blueMaterial);
+    scene.add(xAxisLine);
+    scene.add(yAxisLine);
+    scene.add(zAxisLine);
 }
 // Handle resizing of the browser window.
 function handleResize() {

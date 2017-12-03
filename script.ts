@@ -1,6 +1,7 @@
 let camera: THREE.PerspectiveCamera;
 let scene: THREE.Scene;
 let renderer: THREE.WebGLRenderer;
+let cube: THREE.Mesh;
 let mesh;
 
 // Initialise the scene, and draw it for the first time.
@@ -55,11 +56,40 @@ function setupRenderer() {
 // Draws a cube.
 function drawCube() {
     // TODO: Draw a cube (requirement 1).
+    let geometry = new THREE.BoxGeometry(2, 2, 2);
+    let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 }
 
 // Draw the x, y, z axes.
 function drawAxes() {
     // TODO: Visualise the axes of the global coordinate system (requirment 2).
+    // Materials
+    const redMaterial = new THREE.LineBasicMaterial({color: 0xff0000});
+    const greenMaterial = new THREE.LineBasicMaterial({color: 0x00ff00});
+    const blueMaterial = new THREE.LineBasicMaterial({color: 0x0000ff});
+
+    const origin = new THREE.Vector3(0, 0, 0);
+    const xVector = new THREE.Vector3(100, 0, 0);
+    const yVector = new THREE.Vector3(0, 100, 0);
+    const zVector = new THREE.Vector3(0, 0, 100);
+
+    const xGeometry = new THREE.Geometry();
+    const yGeometry = new THREE.Geometry();
+    const zGeometry = new THREE.Geometry();
+
+    xGeometry.vertices.push(origin, xVector);
+    yGeometry.vertices.push(origin, yVector);
+    zGeometry.vertices.push(origin, zVector);
+
+    const xAxisLine = new THREE.Line(xGeometry, redMaterial);
+    const yAxisLine = new THREE.Line(yGeometry, greenMaterial);
+    const zAxisLine = new THREE.Line(zGeometry, blueMaterial);
+
+    scene.add(xAxisLine);
+    scene.add(yAxisLine);
+    scene.add(zAxisLine);
 }
 
 // Handle resizing of the browser window.
